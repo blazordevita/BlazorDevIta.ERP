@@ -1,6 +1,6 @@
 # Blazor Developer Italiani ERP
 
-Infrastruttura di base di un ERP con Blazor, sviluppato durante le live sul canale [Twitch della community](https://www.twitch.tv/blazordevita.) ogni martedi alle 21.
+Infrastruttura di base di un ERP con Blazor, sviluppato durante le live sul canale [Twitch della community](https://www.twitch.tv/blazordevita) ogni martedi alle 21.
 
 Strutturando la soluzione affronteremo i principi di funzionamento del framework, dalle basi fino agli aspetti avanzati. 
 
