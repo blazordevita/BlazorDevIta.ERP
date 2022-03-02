@@ -1,0 +1,9 @@
+﻿@page "/"
+@namespace BlazorDevIta.ERP.BlazorServer.Pages
+@using BlazorDevIta.UI
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+
+<component type="typeof(App)" render-mode="ServerPrerendered" />
