@@ -13,9 +13,9 @@ namespace BlazorDevIta.ERP.BlazorWasm.Client.Services
             _http = http;
         }
 
-        public Task<WeatherForecast[]?> GetWeatherForecastsAsync()
+        public Task<List<WeatherForecast?>> GetWeatherForecastsAsync()
         {
-            return _http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+            return _http.GetFromJsonAsync<List<WeatherForecast?>>("WeatherForecast");
         }
     }
 }
