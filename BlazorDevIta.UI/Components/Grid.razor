@@ -14,10 +14,10 @@
             @foreach (var forecast in Forecasts)
             {
                 <tr>
-                    <td>@forecast!.Date.ToShortDateString()</td>
-                    <td>@forecast!.TemperatureC</td>
-                    <td>@forecast!.TemperatureF</td>
-                    <td>@forecast!.Summary</td>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
                     <td>
                         <button class="btn btn-warning"
                             @onclick="@(() => OnEdit.InvokeAsync(forecast))">
@@ -41,7 +41,7 @@ else
 @code {
 
     [Parameter]
-    public List<WeatherForecast?>? Forecasts { get; set; }
+    public List<WeatherForecast>? Forecasts { get; set; }
 
     [Parameter]
     public EventCallback<WeatherForecast> OnEdit { get; set; }
