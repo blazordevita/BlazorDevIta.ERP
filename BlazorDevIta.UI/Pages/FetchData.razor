@@ -5,21 +5,19 @@
 
 <PageTitle>Weather forecast</PageTitle>
 
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
-
 @if (forecasts == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <Grid Forecasts="forecasts" OnEdit="Edit" OnDelete="Delete" />
-
-    @if (currentForecast != null)
+    @if (currentForecast == null)
     {
-        <Details CurrentItem="currentForecast" />
+        <Grid Forecasts="forecasts" OnCreate="Create" OnEdit="Edit" OnDelete="Delete" />
+    }
+    else
+    {
+        <Details CurrentItem="currentForecast" OnCancel="Cancel" OnSave="Save" />
     }
 
 }
@@ -33,13 +31,30 @@ else
         forecasts = await DataServices.GetWeatherForecastsAsync();
     }
 
+    private void Create()
+    {
+        currentForecast = new WeatherForecast();
+    }
+
     private void Edit(WeatherForecast forecast)
     {
         currentForecast = forecast;
     }
 
+    private void Save(WeatherForecast forecast)
+    {
+        forecasts!.Add(forecast);
+        currentForecast = null;
+    }
+
+
     private void Delete(WeatherForecast forecast)
     {
         forecasts?.Remove(forecast);
+    }
+
+    private void Cancel()
+    {
+        currentForecast = null;
     }
 }

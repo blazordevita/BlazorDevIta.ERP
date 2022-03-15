@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace BlazorDevIta.ERP.Shared
 {
     public class WeatherForecast
@@ -6,6 +8,8 @@ namespace BlazorDevIta.ERP.Shared
 
         public int TemperatureC { get; set; }
 
+        [Required]
+        [MaxLength(50)]
         public string? Summary { get; set; }
 
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);

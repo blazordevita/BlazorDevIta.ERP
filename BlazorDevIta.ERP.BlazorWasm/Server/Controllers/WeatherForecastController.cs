@@ -30,5 +30,16 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
             })
             .ToArray();
         }
+
+        [HttpPost]
+        public IActionResult Post(WeatherForecast model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Salviamo i nostri dati
+                return Ok(); // Created
+            }
+            return BadRequest(model);
+        }
     }
 }
