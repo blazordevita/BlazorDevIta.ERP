@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.ERP.Shared", "BlazorDevIta.Shared\BlazorDevIta.ERP.Shared.csproj", "{C9613A45-6E64-45D8-8572-5A634A89BA69}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.ERP.BlazorWasm.Client", "BlazorDevIta.ERP.BlazorWasm\Client\BlazorDevIta.ERP.BlazorWasm.Client.csproj", "{77DABF7E-4B72-4B74-93B7-F82A88FF04CA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.ERP.BlazorWasm.Server", "BlazorDevIta.ERP.BlazorWasm\Server\BlazorDevIta.ERP.BlazorWasm.Server.csproj", "{826ADF17-C6F4-4557-B50E-6322CA522484}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDevIta.UI.Tests", "BlazorDevIta.UI.Tests\BlazorDevIta.UI.Tests.csproj", "{1C327BBA-0221-49D3-8094-657F225C5781}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{826ADF17-C6F4-4557-B50E-6322CA522484}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{826ADF17-C6F4-4557-B50E-6322CA522484}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{826ADF17-C6F4-4557-B50E-6322CA522484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C327BBA-0221-49D3-8094-657F225C5781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C327BBA-0221-49D3-8094-657F225C5781}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C327BBA-0221-49D3-8094-657F225C5781}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C327BBA-0221-49D3-8094-657F225C5781}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
