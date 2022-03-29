@@ -23,8 +23,8 @@ else
 }
 
 @code {
-    private List<WeatherForecast?>? forecasts = null;
-    private WeatherForecast? currentForecast = null;
+    private List<WeatherForecastListItem?>? forecasts = null;
+    private WeatherForecastDetails? currentForecast = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,22 +33,22 @@ else
 
     private void Create()
     {
-        currentForecast = new WeatherForecast();
+        currentForecast = new WeatherForecastDetails();
     }
 
-    private void Edit(WeatherForecast forecast)
+    private async Task Edit(WeatherForecastListItem forecast)
     {
-        currentForecast = forecast;
+        currentForecast = await DataServices.GetWeatherForecastByIdAsync(forecast.Id);
     }
 
-    private void Save(WeatherForecast forecast)
+    private void Save(WeatherForecastDetails forecast)
     {
-        forecasts!.Add(forecast);
+        // forecasts!.Add(forecast);
         currentForecast = null;
     }
 
 
-    private void Delete(WeatherForecast forecast)
+    private void Delete(WeatherForecastListItem forecast)
     {
         forecasts?.Remove(forecast);
     }

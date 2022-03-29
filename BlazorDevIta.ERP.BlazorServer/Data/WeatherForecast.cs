@@ -1,9 +1,11 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorDevIta.ERP.Shared
+namespace BlazorDevIta.ERP.BlazorServer.Data
 {
     public class WeatherForecast
     {
+        public int Id { get; set; }
+
         public DateTime Date { get; set; }
 
         public int TemperatureC { get; set; }
@@ -11,7 +13,5 @@ namespace BlazorDevIta.ERP.Shared
         [Required]
         [MaxLength(50)]
         public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 }

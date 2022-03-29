@@ -29,12 +29,12 @@
 @code {
 
     [Parameter]
-    public WeatherForecast? CurrentItem { get; set; }
+    public WeatherForecastDetails? CurrentItem { get; set; }
 
     [Parameter]
     public EventCallback OnCancel { get; set; }
 
     [Parameter]
-    public EventCallback<WeatherForecast> OnSave { get; set; }
+    public EventCallback<WeatherForecastDetails> OnSave { get; set; }
 
 }
