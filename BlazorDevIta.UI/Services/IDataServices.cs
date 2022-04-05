@@ -7,5 +7,9 @@ namespace BlazorDevIta.UI.Services
         Task<List<WeatherForecastListItem?>> GetWeatherForecastsAsync();
 
         Task<WeatherForecastDetails?> GetWeatherForecastByIdAsync(int id);
+
+        Task Create(WeatherForecastDetails details);
+        Task Update(WeatherForecastDetails details);
+        Task Delete(int id);
     }
 }

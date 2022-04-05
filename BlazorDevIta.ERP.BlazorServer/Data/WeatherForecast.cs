@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlazorDevIta.ERP.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorDevIta.ERP.BlazorServer.Data
 {
-    public class WeatherForecast
+    public class WeatherForecast: IEntity<int>
     {
         public int Id { get; set; }
 

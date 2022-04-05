@@ -13,6 +13,16 @@ namespace BlazorDevIta.ERP.BlazorWasm.Client.Services
             _http = http;
         }
 
+        public Task Create(WeatherForecastDetails details)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<WeatherForecastDetails?> GetWeatherForecastByIdAsync(int id)
         {
             throw new NotImplementedException();
@@ -21,6 +31,11 @@ namespace BlazorDevIta.ERP.BlazorWasm.Client.Services
         public Task<List<WeatherForecastListItem?>> GetWeatherForecastsAsync()
         {
             return _http.GetFromJsonAsync<List<WeatherForecastListItem?>>("WeatherForecast");
+        }
+
+        public Task Update(WeatherForecastDetails details)
+        {
+            throw new NotImplementedException();
         }
     }
 }
