@@ -8,5 +8,12 @@ namespace BlazorDevIta.ERP.BlazorServer.Data
             : base(opt) { }
 
         public DbSet<WeatherForecast> WeatherForecasts => Set<WeatherForecast>();
+        
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var x = await base.SaveChangesAsync(cancellationToken);
+            ChangeTracker.Clear();
+            return x;
+        }
     }
 }
