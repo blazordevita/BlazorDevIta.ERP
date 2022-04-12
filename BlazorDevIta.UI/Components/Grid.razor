@@ -1,34 +1,45 @@
-﻿<h1>Weather forecast</h1>
+﻿@typeparam GridItemType where GridItemType: class
+
+<h1>List Items</h1>
 
 <button class="btn btn-primary" @onclick="OnCreate">
-    Create Weather forecast
+    Create Item
 </button>
 
-@if (Forecasts?.Count > 0)
+@if (Items?.Count > 0)
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
+                @foreach (var property in properties)
+                {
+                    var display = property.GetCustomAttribute<DisplayAttribute>();
+                    <th>@(display == null ? property.Name : display.Name)</th>
+                }
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in Forecasts)
+            @foreach (var item in Items)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
+                    @foreach (var property in properties)
+                    {
+                        var value = property.GetValue(item);
+                        var displayFormat = property.GetCustomAttribute<DisplayFormatAttribute>();
+                        <td>
+                            @(displayFormat?.DataFormatString == null 
+                                ? value 
+                                : string.Format(displayFormat.DataFormatString, value))
+                        </td>
+                    }
                     <td>
                         <button class="btn btn-warning"
-                            @onclick="@(() => OnEdit.InvokeAsync(forecast))">
+                        @onclick="@(() => OnEdit.InvokeAsync(item))">
                             Edit
                         </button>
                         <button class="btn btn-danger"
-                            @onclick="@(() => OnDelete.InvokeAsync(forecast))">
+                        @onclick="@(() => OnDelete.InvokeAsync(item))">
                             Delete
                         </button>
                     </td>
@@ -43,17 +54,20 @@ else
 }
 
 @code {
+    private PropertyInfo[] properties = typeof(GridItemType).GetProperties()
+        .Where(x => x.GetCustomAttribute<HiddenAttribute>() == null)
+        .ToArray();
 
     [Parameter]
-    public List<WeatherForecastListItem>? Forecasts { get; set; }
+    public List<GridItemType>? Items { get; set; }
 
     [Parameter]
     public EventCallback OnCreate { get; set; }
 
     [Parameter]
-    public EventCallback<WeatherForecastListItem> OnEdit { get; set; }
-    
+    public EventCallback<GridItemType> OnEdit { get; set; }
+
     [Parameter]
-    public EventCallback<WeatherForecastListItem> OnDelete { get; set; }
+    public EventCallback<GridItemType> OnDelete { get; set; }
 
 }

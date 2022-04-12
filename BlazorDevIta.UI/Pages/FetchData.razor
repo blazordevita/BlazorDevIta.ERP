@@ -13,7 +13,10 @@ else
 {
     @if (currentForecast == null)
     {
-        <Grid Forecasts="forecasts" OnCreate="Create" OnEdit="Edit" OnDelete="Delete" />
+        <Grid 
+            GridItemType="WeatherForecastListItem" 
+            Items="forecasts" 
+            OnCreate="Create" OnEdit="Edit" OnDelete="Delete" />
     }
     else
     {
