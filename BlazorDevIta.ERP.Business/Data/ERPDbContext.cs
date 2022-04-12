@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace BlazorDevIta.ERP.BlazorServer.Data
+namespace BlazorDevIta.ERP.Business.Data
 {
     public class ERPDbContext : DbContext
     {

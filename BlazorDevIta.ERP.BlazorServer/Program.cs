@@ -1,4 +1,4 @@
-using BlazorDevIta.ERP.BlazorServer.Data;
+using BlazorDevIta.ERP.Business.Data;
 using BlazorDevIta.ERP.BlazorServer.Services;
 using BlazorDevIta.ERP.Infrastructure;
 using BlazorDevIta.ERP.Infrastructure.EF;
@@ -16,7 +16,9 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IDataServices, DataServices>();
 
 builder.Services.AddDbContext<ERPDbContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    opt.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("BlazorDevIta.ERP.BlazorServer")));
 
 builder.Services.AddScoped<DbContext, ERPDbContext>();
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(EFRepository<,>));

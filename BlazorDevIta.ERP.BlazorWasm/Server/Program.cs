@@ -1,4 +1,8 @@
+using BlazorDevIta.ERP.Business.Data;
+using BlazorDevIta.ERP.Infrastructure;
+using BlazorDevIta.ERP.Infrastructure.EF;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ERPDbContext>(opt =>
+    opt.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("BlazorDevIta.ERP.BlazorWasm.Server")));
+
+builder.Services.AddScoped<DbContext, ERPDbContext>();
+builder.Services.AddScoped(typeof(IRepository<,>), typeof(EFRepository<,>));
 
 var app = builder.Build();
 

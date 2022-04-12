@@ -12,8 +12,8 @@ namespace BlazorDevIta.ERP.Infrastructure
         IQueryable<TEntity> GetAll();
         Task<TEntity?> GetByIdAsync(TKey id);
 
-        Task Create(TEntity entity);
-        Task Update(TEntity entity);
-        Task Delete(TKey id);
+        Task CreateAsync(TEntity entity);
+        Task UpdateAsync(TEntity entity);
+        Task DeleteAsync(TKey id);
     }
 }

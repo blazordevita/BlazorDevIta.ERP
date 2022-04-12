@@ -1,7 +1,7 @@
 ﻿using BlazorDevIta.ERP.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 
-namespace BlazorDevIta.ERP.BlazorServer.Data
+namespace BlazorDevIta.ERP.Business.Data
 {
     public class WeatherForecast: IEntity<int>
     {

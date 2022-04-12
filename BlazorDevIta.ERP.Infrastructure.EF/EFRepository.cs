@@ -28,20 +28,20 @@ namespace BlazorDevIta.ERP.Infrastructure.EF
             return entity;
         }
 
-        public async Task Create(TEntity entity)
+        public async Task CreateAsync(TEntity entity)
         {
             _set.Add(entity);
            await _dbContext.SaveChangesAsync();
            _dbContext.Entry(entity).State = EntityState.Detached;
         }
 
-        public async Task Update(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
             _set.Update(entity);
             await _dbContext.SaveChangesAsync();
             _dbContext.Entry(entity).State = EntityState.Detached;
         }
-        public Task Delete(TKey id)
+        public Task DeleteAsync(TKey id)
         {
             var entity = new TEntity()
             {

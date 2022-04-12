@@ -1,4 +1,4 @@
-﻿using BlazorDevIta.ERP.BlazorServer.Data;
+﻿using BlazorDevIta.ERP.Business.Data;
 using BlazorDevIta.ERP.Infrastructure;
 using BlazorDevIta.ERP.Shared;
 using BlazorDevIta.UI.Services;
@@ -49,11 +49,7 @@ namespace BlazorDevIta.ERP.BlazorServer.Services
                 TemperatureC = details.TemperatureC,
                 Summary = details.Summary
             };
-            return _repository.Create(entity);
-            
-            /*_dbContext.WeatherForecasts.Add(entity);
-            await  _dbContext.SaveChangesAsync();
-            _dbContext.Entry(entity).State = EntityState.Detached;*/
+            return _repository.CreateAsync(entity);
         }
 
         public Task Update(WeatherForecastDetails details)
@@ -65,23 +61,12 @@ namespace BlazorDevIta.ERP.BlazorServer.Services
                 TemperatureC = details.TemperatureC,
                 Summary = details.Summary
             };
-            return _repository.Update(entity);
-
-            /*_dbContext.WeatherForecasts.Update(entity);
-            await _dbContext.SaveChangesAsync();
-            _dbContext.Entry(entity).State = EntityState.Detached;*/
+            return _repository.UpdateAsync(entity);
         }
 
         public Task Delete(int id)
         {
-            return _repository.Delete(id);
-           
-            /* var entity = new WeatherForecast()
-            {
-                Id = id,
-            };
-            _dbContext.WeatherForecasts.Remove(entity);
-            return _dbContext.SaveChangesAsync();*/
+            return _repository.DeleteAsync(id);
         }
     }
 }

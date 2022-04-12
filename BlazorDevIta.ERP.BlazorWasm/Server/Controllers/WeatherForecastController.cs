@@ -1,5 +1,8 @@
+using BlazorDevIta.ERP.Business.Data;
+using BlazorDevIta.ERP.Infrastructure;
 using BlazorDevIta.ERP.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
 {
@@ -7,38 +10,92 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IRepository<WeatherForecast, int> _repository;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(
+            IRepository<WeatherForecast, int> repository,
+            ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
+            _repository = repository;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecastListItem> Get()
+        public async Task<IActionResult> Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecastListItem
+            var result = await _repository.GetAll()
+                 .Select(x =>
+                     new WeatherForecastListItem()
+                     {
+                         Id = x.Id,
+                         Date = x.Date,
+                         TemperatureC = x.TemperatureC
+                     }).ToListAsync();
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var entity = await _repository.GetByIdAsync(id);
+            if (entity == null) return NotFound();
+
+            var result = new WeatherForecastDetails()
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-            })
-            .ToArray();
+                Id = entity.Id,
+                Date = entity.Date,
+                TemperatureC = entity.TemperatureC,
+                Summary = entity.Summary
+            };
+
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Post(WeatherForecastListItem model)
+        public async Task<IActionResult> Post(WeatherForecastDetails model)
         {
             if (ModelState.IsValid)
             {
-                // Salviamo i nostri dati
-                return Ok(); // Created
+                var entity = new WeatherForecast()
+                {
+                    Id = model.Id,
+                    Date = model.Date,
+                    TemperatureC = model.TemperatureC,
+                    Summary = model.Summary
+                };
+                await _repository.CreateAsync(entity);
+                return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
             }
             return BadRequest(model);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, WeatherForecastDetails model)
+        {
+            var entity = await _repository.GetByIdAsync(id);
+            if (entity == null) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                entity.Date = model.Date;
+                entity.TemperatureC = model.TemperatureC;
+                entity.Summary = model.Summary;
+                await _repository.UpdateAsync(entity);
+                return NoContent();
+            }
+            return BadRequest(model);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var entity = await _repository.GetByIdAsync(id);
+            if (entity == null) return NotFound();
+            await _repository.DeleteAsync(id);
+            return NoContent();
         }
     }
 }
