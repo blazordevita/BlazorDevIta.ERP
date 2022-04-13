@@ -67,7 +67,7 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
                     Summary = model.Summary
                 };
                 await _repository.CreateAsync(entity);
-                return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
+                return CreatedAtAction(nameof(GetById), new { id = model.Id }, model);
             }
             return BadRequest(model);
         }
