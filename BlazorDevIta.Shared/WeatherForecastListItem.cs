@@ -5,7 +5,6 @@ namespace BlazorDevIta.ERP.Shared
 {
     public class WeatherForecastListItem
     {
-        [Hidden]
         public int Id { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
@@ -14,7 +13,6 @@ namespace BlazorDevIta.ERP.Shared
         [Display(Name = "Temp (C)")]
         public int TemperatureC { get; set; }
 
-        [Hidden]
         [Display(Name = "Temp (F)")]
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }

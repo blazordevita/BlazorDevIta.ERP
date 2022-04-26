@@ -1,0 +1,29 @@
+﻿<div class="form-group">
+    <label for="@Id">@Label</label>
+    <InputNumber id="@Id" 
+        TValue="int"
+        Value="@Value"
+        ValueChanged="@ValueChanged"
+        ValueExpression="@ValueExpression"
+        class="form-control" />
+    <ValidationMessage For="@ValueExpression" />
+</div>
+
+@code {
+
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public int Value { get; set; }
+    [Parameter] public EventCallback<int> ValueChanged { get; set; }
+    [Parameter] public Expression<Func<int>>? ValueExpression { get; set; }
+
+
+    protected override void OnParametersSet()
+    {
+        if(string.IsNullOrEmpty(Id))
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+    }
+
+}

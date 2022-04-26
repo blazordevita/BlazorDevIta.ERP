@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.ERP.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.ERP.Infrastructure.EF", "BlazorDevIta.ERP.Infrastructure.EF\BlazorDevIta.ERP.Infrastructure.EF.csproj", "{9E42CBAB-4E29-4C84-9031-B062C8250639}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDevIta.ERP.Business", "BlazorDevIta.ERP.Business\BlazorDevIta.ERP.Business.csproj", "{971F934A-7F4A-413E-9205-13960C72A47B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.ERP.Business", "BlazorDevIta.ERP.Business\BlazorDevIta.ERP.Business.csproj", "{971F934A-7F4A-413E-9205-13960C72A47B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -20,7 +20,14 @@ else
     }
     else
     {
-        <Details CurrentItem="currentForecast" OnCancel="Cancel" OnSave="Save" />
+        <Details HeaderPropertyName="Summary" DetailsType="WeatherForecastDetails" 
+            Item="currentForecast" OnCancel="Cancel" OnSave="Save">
+            <Fields Context="weather">
+                <TextBox Label="Summary" @bind-Value="weather!.Summary" />
+                <DateBox Label="Date" @bind-Value="weather.Date" />
+                <IntegerBox Label="Temperature C" @bind-Value="weather.TemperatureC" />
+            </Fields>
+        </Details>
     }
 
 }

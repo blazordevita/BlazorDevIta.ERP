@@ -1,26 +1,15 @@
-﻿<h3>Details @CurrentItem?.Summary</h3>
+﻿@typeparam DetailsType
 
-<EditForm Model="@CurrentItem" OnValidSubmit="@(() => OnSave.InvokeAsync(CurrentItem))">
+<h3>Details @valueHeaderPropertyName</h3>
+
+<EditForm Model="@Item" OnValidSubmit="@(() => OnSave.InvokeAsync(Item))">
     <DataAnnotationsValidator />
 
-    <div class="form-group">
-        <label>Summary</label>
-        <InputText @bind-Value="CurrentItem!.Summary" class="form-control" />
-        <ValidationMessage For="@(() => CurrentItem.Summary)" />
-    </div>
+    @if(Fields != null && Item != null)
+    {
+        @Fields(Item);
+    }
 
-    <div class="form-group">
-        <label>Date</label>
-        <InputDate @bind-Value="CurrentItem.Date" class="form-control" />
-        <ValidationMessage For="@(() => CurrentItem.Date)" />
-    </div>
-
-    <div class="form-group">
-        <label>Temperature C</label>
-        <InputNumber @bind-Value="CurrentItem.TemperatureC" class="form-control" />
-        <ValidationMessage For="@(() => CurrentItem.TemperatureC)" />
-    </div>
-    
     <button type="button" class="btn btn-default" @onclick="OnCancel">Cancel</button>
     <button type="submit" class="btn btn-primary">Save</button>
 </EditForm>
@@ -29,12 +18,33 @@
 @code {
 
     [Parameter]
-    public WeatherForecastDetails? CurrentItem { get; set; }
+    public string? HeaderPropertyName { get; set; }
+
+    [Parameter]
+    public RenderFragment<DetailsType>? Fields { get; set; }
+
+    [Parameter]
+    public DetailsType? Item { get; set; }
 
     [Parameter]
     public EventCallback OnCancel { get; set; }
 
     [Parameter]
-    public EventCallback<WeatherForecastDetails> OnSave { get; set; }
+    public EventCallback<DetailsType> OnSave { get; set; }
+
+    private string? valueHeaderPropertyName;
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(HeaderPropertyName))
+        {
+            valueHeaderPropertyName = typeof(DetailsType)
+                ?.GetProperty(HeaderPropertyName)
+                ?.GetValue(Item)
+                ?.ToString();
+        }
+        else valueHeaderPropertyName = null;
+    }
+
 
 }
