@@ -1,11 +1,10 @@
+using BlazorDevIta.ERP.Infrastructure.DataTypes;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlazorDevIta.ERP.Shared
 {
-	public class WeatherForecastDetails
+	public class WeatherForecastDetails: BaseDetails<int>
 	{
-		public int Id { get; set; }
-
 		public DateTime Date { get; set; }
 
 		public int TemperatureC { get; set; }

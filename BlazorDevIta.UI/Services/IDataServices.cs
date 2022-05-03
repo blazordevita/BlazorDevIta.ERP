@@ -2,16 +2,16 @@
 
 namespace BlazorDevIta.UI.Services
 {
-	public interface IDataServices
+	public interface IDataServices<ListItemType, DetailsType, IdType>
 	{
-		Task<List<WeatherForecastListItem?>> GetWeatherForecastsAsync();
+		Task<List<ListItemType?>> GetAllAsync();
 
-		Task<WeatherForecastDetails?> GetWeatherForecastByIdAsync(int id);
+		Task<DetailsType?> GetByIdAsync(IdType id);
 
-		Task Create(WeatherForecastDetails details);
+		Task CreateAsync(DetailsType details);
 
-		Task Update(WeatherForecastDetails details);
+		Task UpdateAsync(DetailsType details);
 
-		Task Delete(int id);
+		Task DeleteAsync(IdType id);
 	}
 }

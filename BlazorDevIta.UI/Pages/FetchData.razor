@@ -1,27 +1,27 @@
 ﻿@page "/fetchdata"
 @using BlazorDevIta.ERP.Shared
 @using BlazorDevIta.UI.Shared
-@inject IDataServices DataServices
+@inherits BaseCRUDPage<WeatherForecastListItem, WeatherForecastDetails, int>
 
 <PageTitle>Weather forecast</PageTitle>
 
-@if (forecasts == null)
+@if (items == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    @if (currentForecast == null)
+    @if (currentItem == null)
     {
         <Grid 
             GridItemType="WeatherForecastListItem" 
-            Items="forecasts" 
+            Items="items" 
             OnCreate="Create" OnEdit="Edit" OnDelete="Delete" />
     }
     else
     {
         <Details HeaderPropertyName="Summary" DetailsType="WeatherForecastDetails" 
-            Item="currentForecast" OnCancel="Cancel" OnSave="Save">
+            Item="currentItem" OnCancel="Cancel" OnSave="Save">
             <Fields Context="weather">
                 <TextBox Label="Summary" @bind-Value="weather!.Summary" />
                 <DateBox Label="Date" @bind-Value="weather.Date" />
@@ -30,51 +30,4 @@ else
         </Details>
     }
 
-}
-
-@code {
-    private List<WeatherForecastListItem?>? forecasts = null;
-    private WeatherForecastDetails? currentForecast = null;
-
-    protected override async Task OnInitializedAsync()
-        => await RefreshData();
-
-    private async Task RefreshData()
-        => forecasts = await DataServices.GetWeatherForecastsAsync();
-
-    private void Create()
-    {
-        currentForecast = new WeatherForecastDetails();
-    }
-
-    private async Task Edit(WeatherForecastListItem forecast)
-    {
-        currentForecast = await DataServices.GetWeatherForecastByIdAsync(forecast.Id);
-    }
-
-    private async Task Save(WeatherForecastDetails forecast)
-    {
-        if(forecast.Id == 0)
-        {
-            await DataServices.Create(forecast);
-        }
-        else
-        {
-            await DataServices.Update(forecast);
-        }
-        await RefreshData();
-        currentForecast = null;
-    }
-
-
-    private async Task Delete(WeatherForecastListItem forecast)
-    {
-        await DataServices.Delete(forecast.Id);
-        await RefreshData();
-    }
-
-    private void Cancel()
-    {
-        currentForecast = null;
-    }
 }

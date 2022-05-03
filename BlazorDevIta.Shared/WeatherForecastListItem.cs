@@ -1,11 +1,10 @@
+using BlazorDevIta.ERP.Infrastructure.DataTypes;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlazorDevIta.ERP.Shared
 {
-	public class WeatherForecastListItem
+	public class WeatherForecastListItem : BaseListItem<int>
 	{
-		public int Id { get; set; }
-
 		[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
 		public DateTime Date { get; set; }
 

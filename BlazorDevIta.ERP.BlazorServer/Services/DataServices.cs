@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorDevIta.ERP.BlazorServer.Services
 {
-	public class DataServices : IDataServices
+	public class DataServices<ListItemType, DetailsType, IdType> 
+		: IDataServices<ListItemType, DetailsType, IdType>
 	{
 		private readonly IRepository<WeatherForecast, int> _repository;
 
