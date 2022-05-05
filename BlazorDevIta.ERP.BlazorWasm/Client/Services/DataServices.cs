@@ -2,56 +2,57 @@
 using BlazorDevIta.UI.Services;
 using System.Net.Http.Json;
 
-namespace BlazorDevIta.ERP.BlazorWasm.Client.Services
+namespace BlazorDevIta.ERP.BlazorWasm.Client.Services;
+
+public class DataServices<ListItemType, DetailsType, IdType> 
+	: IDataServices<ListItemType, DetailsType, IdType>
+	where DetailsType : BaseDetails<IdType>
 {
-	public class DataServices<ListItemType, DetailsType, IdType> 
-		: IDataServices<ListItemType, DetailsType, IdType>
-		where DetailsType : BaseDetails<IdType>
-	{
-		private readonly HttpClient _http;
-        private readonly IConfiguration _configuration;
+	private readonly HttpClient _http;
 
         public DataServices(HttpClient http, IConfiguration configuration)
-		{
-			_http = http;
-			_configuration = configuration;
-		}
+	{
+		_http = http;
+		configuration.GetSection($"DataServices:{typeof(DetailsType).Name}").Bind(this);
+		configuration.GetSection($"DataServices:{typeof(ListItemType).Name}").Bind(this);
 
-		public Task CreateAsync(DetailsType details)
-		{
-			var baseUrl = getBaseUrl<DetailsType>();
-			return _http.PostAsJsonAsync($"{baseUrl}", details);
-		}
-
-		public Task DeleteAsync(IdType id)
-		{
-			var baseUrl = getBaseUrl<DetailsType>();
-			return _http.DeleteAsync($"{baseUrl}/{id}");
-		}
-
-		public Task<DetailsType?> GetByIdAsync(IdType id)
-		{
-			var baseUrl = getBaseUrl<DetailsType>();
-			return _http.GetFromJsonAsync<DetailsType?>($"{baseUrl}/{id}")!;
-		}
-
-		public Task<List<ListItemType?>> GetAllAsync()
-		{
-			var baseUrl = getBaseUrl<ListItemType>();
-			return _http.GetFromJsonAsync<List<ListItemType?>>(baseUrl)!;
-		}
-
-		public Task UpdateAsync(DetailsType details)
-		{
-			var baseUrl = getBaseUrl<DetailsType>();
-			return _http.PutAsJsonAsync($"{baseUrl}/{details.Id}", details);
-		}
-
-		private string getBaseUrl<T>()
-        {
-			var baseUrl = _configuration[$"ApiUrls:{typeof(T).Name}"];
-			if (baseUrl == null) throw new Exception($"ApiUrls:{typeof(T).Name} not configured");
-			return baseUrl;
-		}
+		if (string.IsNullOrEmpty(epCreate))
+			throw new Exception($"DataServices:{nameof(epCreate)} not configured");
+		if (string.IsNullOrEmpty(epDelete))
+			throw new Exception($"DataServices:{nameof(epDelete)} not configured");
+		if (string.IsNullOrEmpty(epGetById))
+			throw new Exception($"DataServices:{nameof(epGetById)} not configured");
+		if (string.IsNullOrEmpty(epUpdate))
+			throw new Exception($"DataServices:{nameof(epUpdate)} not configured");
+		if (string.IsNullOrEmpty(epGetAll))
+			throw new Exception($"DataServices:{nameof(epGetAll)} not configured");
 	}
+
+	public string epCreate { get; init; }
+	public string epDelete { get; init; }
+	public string epGetById { get; init; }
+	public string epUpdate { get; init; }
+	
+	public string epGetAll { get; init; }
+
+	public Task CreateAsync(DetailsType details)
+	=> _http.PostAsJsonAsync(epCreate, details);
+	
+
+	public Task DeleteAsync(IdType id)
+	=> _http.DeleteAsync($"{epDelete}/{id}");
+	
+
+	public Task<DetailsType?> GetByIdAsync(IdType id)
+	=> _http.GetFromJsonAsync<DetailsType?>($"{epGetById}/{id}")!;
+	
+
+	public Task<List<ListItemType?>> GetAllAsync()
+	=> _http.GetFromJsonAsync<List<ListItemType?>>(epGetAll)!;
+	
+
+	public Task UpdateAsync(DetailsType details)
+	=> _http.PutAsJsonAsync($"{epUpdate}/{details.Id}", details);
+	
+
 }
