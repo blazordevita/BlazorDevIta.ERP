@@ -1,8 +1,10 @@
+using BlazorDevIta.ERP.BlazorWasm.Server.Configurations;
 using BlazorDevIta.ERP.Business.Data;
 using BlazorDevIta.ERP.Infrastructure;
 using BlazorDevIta.ERP.Infrastructure.EF;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,7 @@ builder.Services.AddDbContext<ERPDbContext>(opt =>
 		b => b.MigrationsAssembly("BlazorDevIta.ERP.BlazorWasm.Server")));
 
 builder.Services.AddScoped<DbContext, ERPDbContext>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(EFRepository<,>));
 
 var app = builder.Build();
