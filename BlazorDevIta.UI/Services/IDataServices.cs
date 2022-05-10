@@ -1,10 +1,12 @@
-﻿using BlazorDevIta.ERP.Shared;
+﻿using BlazorDevIta.ERP.Infrastructure.DataTypes;
+using BlazorDevIta.ERP.Shared;
 
 namespace BlazorDevIta.UI.Services
 {
 	public interface IDataServices<ListItemType, DetailsType, IdType>
+		where ListItemType : BaseListItem<IdType>
 	{
-		Task<List<ListItemType?>> GetAllAsync();
+		Task<Page<ListItemType, IdType>> GetAllAsync(PageParameters parameters);
 
 		Task<DetailsType?> GetByIdAsync(IdType id);
 

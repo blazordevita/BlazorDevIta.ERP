@@ -5,7 +5,7 @@
 
 <PageTitle>Weather forecast</PageTitle>
 
-@if (items == null)
+@if (page == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -13,9 +13,9 @@ else
 {
     @if (currentItem == null)
     {
-        <Grid 
+        <Grid IdType="int"
             GridItemType="WeatherForecastListItem" 
-            Items="items" 
+            Page="page" OnPageRequest="RefreshData"
             OnCreate="Create" OnEdit="Edit" OnDelete="Delete" />
     }
     else

@@ -1,4 +1,5 @@
-﻿@typeparam GridItemType where GridItemType: class
+﻿@typeparam IdType
+@typeparam GridItemType where GridItemType: BaseListItem<IdType>
 
 <h1>List Items</h1>
 
@@ -6,7 +7,7 @@
     Create Item
 </button>
 
-@if (Items?.Count > 0)
+@if (Page?.Items?.Count > 0)
 {
     <table class="table">
         <thead>
@@ -14,13 +15,15 @@
                 @foreach (var property in properties)
                 {
                     var display = property.GetCustomAttribute<DisplayAttribute>();
-                    <th>@(display == null ? property.Name : display.Name)</th>
+                    <th @onclick="() => RequireColumnSort(property.Name)">
+                        @(display == null ? property.Name : display.Name)
+                    </th>
                 }
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Items)
+            @foreach (var item in Page.Items)
             {
                 <tr>
                     @foreach (var property in properties)
@@ -58,8 +61,10 @@ else
         .Where(x => x.GetCustomAttribute<HiddenAttribute>() == null)
         .ToArray();
 
+    private PageParameters pageParameters = new PageParameters();
+
     [Parameter]
-    public List<GridItemType>? Items { get; set; }
+    public Page<GridItemType, IdType>? Page { get; set; }
 
     [Parameter]
     public EventCallback OnCreate { get; set; }
@@ -69,5 +74,25 @@ else
 
     [Parameter]
     public EventCallback<GridItemType> OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<PageParameters> OnPageRequest { get; set; }
+
+    public async Task RequireColumnSort(string propertyName)
+    {
+        if(pageParameters.OrderBy != propertyName)
+        {
+            pageParameters.OrderBy = propertyName;
+            pageParameters.OrderByDirection = OrderDirection.Descendent;
+        }
+        else
+        {
+            pageParameters.OrderByDirection =
+                pageParameters.OrderByDirection == OrderDirection.Descendent
+                    ? OrderDirection.Ascendent : OrderDirection.Descendent;
+        }
+
+        await OnPageRequest.InvokeAsync(pageParameters);
+    }
 
 }

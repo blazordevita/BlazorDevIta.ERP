@@ -45,21 +45,23 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesDefaultResponseType]
-		public virtual async Task<IActionResult> Get()
+		public virtual async Task<IActionResult> Get(
+			[FromQuery]PageParameters parameters)
 		{
-			var result = await _repository.GetAll()
+			var result = _repository.GetAll();
+
+			var sortedResult = await result //.OrderByDescending(x => x.Date)
 				.ProjectTo<ListItemType>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
-				 /*.Select(x =>
-					 new WeatherForecastListItem()
-					 {
-						 Id = x.Id,
-						 Date = x.Date,
-						 TemperatureC = x.TemperatureC
-					 }).ToListAsync();*/
+			var page = new Page<ListItemType, IdType>()
+			{
+				OrderBy = parameters.OrderBy,
+				OrderByDirection = parameters.OrderByDirection,
+				Items = sortedResult
+			};
 
-			return Ok(result);
+			return Ok(page);
 		}
 
 		[HttpGet("{id}")]

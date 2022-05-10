@@ -9,7 +9,7 @@ namespace BlazorDevIta.UI.Pages
         where ListItemType : BaseListItem<IdType>
         where DetailsType : BaseDetails<IdType>, new()
     {
-        protected List<ListItemType?>? items = null;
+        protected Page<ListItemType, IdType>? page = null;
         protected DetailsType? currentItem = null;
 
         [Inject]
@@ -20,11 +20,13 @@ namespace BlazorDevIta.UI.Pages
             if (DataServices == null)
                 throw new Exception("DataServices not provided");
 
-            await RefreshData();
+            await RefreshData(new PageParameters());
         }
 
-        protected async Task RefreshData()
-            => items = await DataServices!.GetAllAsync();
+        protected async Task RefreshData(PageParameters parameters)
+        {
+            page = await DataServices!.GetAllAsync(parameters);
+        }
 
         protected void Create()
         {
@@ -50,7 +52,7 @@ namespace BlazorDevIta.UI.Pages
             {
                 await DataServices!.UpdateAsync(item);
             }
-            await RefreshData();
+            await RefreshData(new PageParameters());
             currentItem = null;
         }
 
@@ -61,7 +63,7 @@ namespace BlazorDevIta.UI.Pages
                 throw new ArgumentException("item id cannot be null", "item.Id");
 
             await DataServices!.DeleteAsync(item.Id);
-            await RefreshData();
+            await RefreshData(new PageParameters());
         }
 
         protected void Cancel()

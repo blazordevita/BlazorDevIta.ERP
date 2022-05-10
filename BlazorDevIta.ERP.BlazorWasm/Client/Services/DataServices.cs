@@ -7,6 +7,7 @@ namespace BlazorDevIta.ERP.BlazorWasm.Client.Services
 	public class DataServices<ListItemType, DetailsType, IdType> 
 		: IDataServices<ListItemType, DetailsType, IdType>
 		where DetailsType : BaseDetails<IdType>
+		where ListItemType : BaseListItem<IdType>
 	{
 		private readonly HttpClient _http;
         private readonly IConfiguration _configuration;
@@ -35,10 +36,11 @@ namespace BlazorDevIta.ERP.BlazorWasm.Client.Services
 			return _http.GetFromJsonAsync<DetailsType?>($"{baseUrl}/{id}")!;
 		}
 
-		public Task<List<ListItemType?>> GetAllAsync()
+		public Task<Page<ListItemType, IdType>> GetAllAsync(PageParameters parameters)
 		{
 			var baseUrl = getBaseUrl<ListItemType>();
-			return _http.GetFromJsonAsync<List<ListItemType?>>(baseUrl)!;
+			return _http.GetFromJsonAsync<Page<ListItemType, IdType>>(
+				$"{baseUrl}?OrderBy={parameters.OrderBy}&OrderByDirection={parameters.OrderByDirection}")!;
 		}
 
 		public Task UpdateAsync(DetailsType details)
