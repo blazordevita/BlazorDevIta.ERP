@@ -1,4 +1,5 @@
 using BlazorDevIta.ERP.BlazorWasm.Server.Configurations;
+using BlazorDevIta.ERP.BlazorWasm.Server.Extensions;
 using BlazorDevIta.ERP.Business.Data;
 using BlazorDevIta.ERP.Infrastructure;
 using BlazorDevIta.ERP.Infrastructure.EF;
@@ -23,6 +24,9 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(EFRepository<,>));
 
 var app = builder.Build();
+
+//Applica le migrazioni mancanti sul DB e inizializza le tabelle se necessario
+await app.InizializeDatabases();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
