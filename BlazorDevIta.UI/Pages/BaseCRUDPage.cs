@@ -20,7 +20,7 @@ namespace BlazorDevIta.UI.Pages
             if (DataServices == null)
                 throw new Exception("DataServices not provided");
 
-            await RefreshData(new PageParameters());
+            await RefreshData(PageParameters.Default);
         }
 
         protected async Task RefreshData(PageParameters parameters)
@@ -52,7 +52,7 @@ namespace BlazorDevIta.UI.Pages
             {
                 await DataServices!.UpdateAsync(item);
             }
-            await RefreshData(new PageParameters());
+            await RefreshData(PageParameters.Default);
             currentItem = null;
         }
 
@@ -63,7 +63,7 @@ namespace BlazorDevIta.UI.Pages
                 throw new ArgumentException("item id cannot be null", "item.Id");
 
             await DataServices!.DeleteAsync(item.Id);
-            await RefreshData(new PageParameters());
+            await RefreshData(PageParameters.Default);
         }
 
         protected void Cancel()

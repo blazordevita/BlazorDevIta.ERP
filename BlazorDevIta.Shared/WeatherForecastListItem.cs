@@ -1,3 +1,4 @@
+using BlazorDevIta.ERP.Infrastructure.Attributes;
 using BlazorDevIta.ERP.Infrastructure.DataTypes;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,6 +12,7 @@ namespace BlazorDevIta.ERP.Shared
 		[Display(Name = "Temp (C)")]
 		public int TemperatureC { get; set; }
 
+        [NotOrderable]
 		[Display(Name = "Temp (F)")]
 		public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 	}

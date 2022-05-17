@@ -9,15 +9,28 @@
 
 @if (Page?.Items?.Count > 0)
 {
-    <table class="table">
+    <table class="table mt-2">
         <thead>
             <tr>
                 @foreach (var property in properties)
                 {
                     var display = property.GetCustomAttribute<DisplayAttribute>();
-                    <th @onclick="() => RequireColumnSort(property.Name)">
-                        @(display == null ? property.Name : display.Name)
-                    </th>
+
+                    var notOrderable = property.GetCustomAttribute<NotOrderableAttribute>();
+
+                    if (notOrderable == null)
+                    {
+                        <th class="th-sort" @onclick="() => RequireColumnSort(property.Name)">
+                            @(display == null ? property.Name : display.Name) @SetSortIcon(property.Name)
+                        </th>
+                    }
+                    else
+                    {
+                        <th>
+                            @(display == null ? property.Name : display.Name)
+                        </th>
+                    }
+
                 }
                 <th></th>
             </tr>
@@ -31,9 +44,9 @@
                         var value = property.GetValue(item);
                         var displayFormat = property.GetCustomAttribute<DisplayFormatAttribute>();
                         <td>
-                            @(displayFormat?.DataFormatString == null 
-                                ? value 
-                                : string.Format(displayFormat.DataFormatString, value))
+                            @(displayFormat?.DataFormatString == null
+                ? value
+                : string.Format(displayFormat.DataFormatString, value))
                         </td>
                     }
                     <td>
@@ -61,7 +74,7 @@ else
         .Where(x => x.GetCustomAttribute<HiddenAttribute>() == null)
         .ToArray();
 
-    private PageParameters pageParameters = new PageParameters();
+    private PageParameters pageParameters = PageParameters.Default;
 
     [Parameter]
     public Page<GridItemType, IdType>? Page { get; set; }
@@ -80,7 +93,7 @@ else
 
     public async Task RequireColumnSort(string propertyName)
     {
-        if(pageParameters.OrderBy != propertyName)
+        if (pageParameters.OrderBy != propertyName)
         {
             pageParameters.OrderBy = propertyName;
             pageParameters.OrderByDirection = OrderDirection.Descendent;
@@ -93,6 +106,27 @@ else
         }
 
         await OnPageRequest.InvokeAsync(pageParameters);
+    }
+
+    private MarkupString SetSortIcon(string propertyName)
+    {
+        if (pageParameters?.OrderBy != null)
+        {
+            if (pageParameters.OrderBy == propertyName)
+            {
+                if (pageParameters.OrderByDirection == OrderDirection.Ascendent)
+                {
+                    return new MarkupString("<span class=\"oi oi-caret-top\"></span>");
+                }
+                else
+                {
+                    return new MarkupString("<span class=\"oi oi-caret-bottom\"></span>");
+                }
+            }
+        }
+
+
+        return new MarkupString();
     }
 
 }
