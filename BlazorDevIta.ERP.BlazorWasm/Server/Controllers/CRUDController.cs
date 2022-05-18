@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using BlazorDevIta.ERP.Infrastructure;
 using BlazorDevIta.ERP.Infrastructure.Attributes;
 using BlazorDevIta.ERP.Infrastructure.DataTypes;
+using BlazorDevIta.ERP.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -51,16 +52,30 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
             [FromQuery] PageParameters parameters)
         {
 
-            bool isOk = VerifyParameters(typeof(ListItemType), parameters);
+            #region Old code
 
-            if (!isOk) parameters = PageParameters.Default;
+            //bool isOk = VerifyParameters(typeof(ListItemType), parameters);
+
+            //if (!isOk) parameters = PageParameters.Default;
+
+
+            //var result = _repository.GetAll();
+
+            //var sortedResult = await result.OrderByPropertyOrField(parameters.OrderBy!, parameters.OrderByDirection)
+            //     .ThenByPropertyOrField("Id", parameters.OrderByDirection)
+            //     .ProjectTo<ListItemType>(_mapper.ConfigurationProvider)
+            //     .ToListAsync();
+
+            #endregion
 
 
             var result = _repository.GetAll();
 
-            var sortedResult = await result.OrderByPropertyOrField(parameters.OrderBy!, parameters.OrderByDirection)
-                 .ProjectTo<ListItemType>(_mapper.ConfigurationProvider)
-                 .ToListAsync();
+            var sortedResult = await result.OrderByPropertyOrFieldWithCheck(parameters.OrderBy!, parameters.OrderByDirection)
+              //.ThenByPropertyOrFieldWithCheck("Id", parameters.OrderByDirection)
+                .ProjectTo<ListItemType>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
 
             var page = new Page<ListItemType, IdType>()
             {

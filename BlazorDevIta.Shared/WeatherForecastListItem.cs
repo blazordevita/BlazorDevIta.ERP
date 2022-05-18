@@ -7,9 +7,11 @@ namespace BlazorDevIta.ERP.Shared
 	public class WeatherForecastListItem : BaseListItem<int>
 	{
 		[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+		[DefaultOrderDirection(OrderDirection.Descendent)]
 		public DateTime Date { get; set; }
 
 		[Display(Name = "Temp (C)")]
+		[DefaultOrderDirection(OrderDirection.Ascendent)]
 		public int TemperatureC { get; set; }
 
         [NotOrderable]
