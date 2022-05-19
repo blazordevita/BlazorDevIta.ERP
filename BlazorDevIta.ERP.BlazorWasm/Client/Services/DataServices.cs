@@ -40,7 +40,7 @@ namespace BlazorDevIta.ERP.BlazorWasm.Client.Services
 		{
 			var baseUrl = getBaseUrl<ListItemType>();
 			return _http.GetFromJsonAsync<Page<ListItemType, IdType>>(
-				$"{baseUrl}?OrderBy={parameters.OrderBy}&OrderByDirection={parameters.OrderByDirection}")!;
+				$"{baseUrl}?OrderBy={parameters.OrderBy}&OrderByDirection={parameters.OrderByDirection}&Page={parameters.Page}")!;
 		}
 
 		public Task UpdateAsync(DetailsType details)

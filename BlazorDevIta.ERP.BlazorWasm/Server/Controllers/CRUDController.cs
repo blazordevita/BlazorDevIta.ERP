@@ -20,6 +20,8 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
         protected readonly ILogger<CRUDController<ListItemType, DetailsType, IdType, EntityType>> _logger;
 		protected readonly IRepository<EntityType, IdType> _repository;
 
+		protected readonly int pageSize = 2;
+
 		public CRUDController(
 			IMapper mapper,
 			IRepository<EntityType, IdType> repository,
@@ -51,6 +53,11 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
 		{
 			var result = _repository.GetAll();
 
+			int itemCount = result.Count();
+			int pageCount = (itemCount + pageSize - 1) / pageSize;
+			if(parameters.Page > pageCount) parameters.Page = pageCount;
+			if(parameters.Page < 1) parameters.Page = 1;
+
 			if(!string.IsNullOrEmpty(parameters.OrderBy))
             {
 				try
@@ -73,9 +80,14 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
 
 			var page = new Page<ListItemType, IdType>()
 			{
+				CurrentPage = parameters.Page,
+				ItemCount = itemCount,
+				PageCount = pageCount,
 				OrderBy = parameters.OrderBy,
 				OrderByDirection = parameters.OrderByDirection,
 				Items = await result
+					.Skip((parameters.Page - 1) * pageSize)
+					.Take(pageSize)
 					.ProjectTo<ListItemType>(_mapper.ConfigurationProvider)
 					.ToListAsync()
 			};

@@ -55,6 +55,27 @@
             }
         </tbody>
     </table>
+
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" @onclick="() => RequestPage(1)">
+            <a class="page-link">First</a>
+        </li>
+        
+        @for(var page = 1; page <= Page.PageCount; page++)
+        {
+            var currentPage = page;
+            <li class="page-item @(Page.CurrentPage == currentPage ? "active" : null)" 
+                @onclick="() => RequestPage(currentPage)">
+                <a class="page-link">@currentPage</a>
+            </li>
+        }
+        
+        <li class="page-item" @onclick="() => RequestPage(Page.PageCount)">
+            <a class="page-link">Last</a>
+        </li>
+      </ul>
+    </nav>
 }
 else
 {
@@ -97,6 +118,12 @@ else
                     ? OrderDirection.Ascendent : OrderDirection.Descendent;
         }
 
+        await OnPageRequest.InvokeAsync(pageParameters);
+    }
+
+    public async Task RequestPage(int page)
+    {
+        pageParameters.Page = page;
         await OnPageRequest.InvokeAsync(pageParameters);
     }
 
