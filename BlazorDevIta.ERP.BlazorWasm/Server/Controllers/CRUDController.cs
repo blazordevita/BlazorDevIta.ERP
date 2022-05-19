@@ -5,6 +5,7 @@ using BlazorDevIta.ERP.Infrastructure.DataTypes;
 using BlazorDevIta.ERP.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
 {
@@ -45,6 +46,9 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
 			return NoContent();
 		}
 
+		protected virtual Expression<Func<EntityType, bool>>? Filter(string filterText)
+			=> null;
+
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesDefaultResponseType]
@@ -52,6 +56,16 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
 			[FromQuery]PageParameters parameters)
 		{
 			var result = _repository.GetAll();
+
+			if(!string.IsNullOrEmpty(parameters.FilterText))
+            {
+				var predicate = Filter(parameters.FilterText);
+				if (predicate != null)
+				{
+					result = result.Where(predicate);
+				}
+            }
+			
 
 			int itemCount = result.Count();
 			int pageCount = (itemCount + pageSize - 1) / pageSize;

@@ -7,6 +7,10 @@
     Create Item
 </button>
 
+<input type="text" class="form-control"
+    @bind-value="pageParameters.FilterText"
+    @onkeyup="@(async (e) => { if (e.Key == "Enter") await OnPageRequest.InvokeAsync(pageParameters); })" />
+
 @if (Page?.Items?.Count > 0)
 {
     <table class="table">
