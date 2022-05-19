@@ -2,6 +2,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BlazorDevIta.ERP.Infrastructure;
 using BlazorDevIta.ERP.Infrastructure.DataTypes;
+using BlazorDevIta.ERP.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,15 +51,33 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
 		{
 			var result = _repository.GetAll();
 
-			var sortedResult = await result //.OrderByDescending(x => x.Date)
-				.ProjectTo<ListItemType>(_mapper.ConfigurationProvider)
-				.ToListAsync();
+			if(!string.IsNullOrEmpty(parameters.OrderBy))
+            {
+				try
+				{
+					if (parameters.OrderByDirection == OrderDirection.Ascendent)
+					{
+						result = result.OrderByProperty(parameters.OrderBy);
+					}
+					else
+					{
+						result = result.OrderByPropertyDescending(parameters.OrderBy);
+					}
+				}
+				catch
+                {
+					parameters.OrderBy = null;
+					parameters.OrderByDirection = OrderDirection.Ascendent;
+                }
+            }
 
 			var page = new Page<ListItemType, IdType>()
 			{
 				OrderBy = parameters.OrderBy,
 				OrderByDirection = parameters.OrderByDirection,
-				Items = sortedResult
+				Items = await result
+					.ProjectTo<ListItemType>(_mapper.ConfigurationProvider)
+					.ToListAsync()
 			};
 
 			return Ok(page);

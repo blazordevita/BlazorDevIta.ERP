@@ -16,6 +16,11 @@
                 {
                     var display = property.GetCustomAttribute<DisplayAttribute>();
                     <th @onclick="() => RequireColumnSort(property.Name)">
+                        <i class="oi 
+                            @(Page.OrderBy == property.Name 
+                                ? Page.OrderByDirection == OrderDirection.Ascendent 
+                                    ? "oi-sort-ascending" : "oi-sort-descending"
+                                : null)"></i>
                         @(display == null ? property.Name : display.Name)
                     </th>
                 }
