@@ -94,6 +94,8 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
 
 			var page = new Page<ListItemType, IdType>()
 			{
+				First = (itemCount > 0 && parameters.Page > 1 ? true : false),
+				Last = (itemCount > 0 && parameters.Page < pageCount ? true : false),
 				CurrentPage = parameters.Page,
 				ItemCount = itemCount,
 				PageCount = pageCount,

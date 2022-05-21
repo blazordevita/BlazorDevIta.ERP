@@ -1,19 +1,24 @@
 ﻿@typeparam DetailsType
 
-<h3>Details @valueHeaderPropertyName</h3>
+<div class="container">
 
-<EditForm Model="@Item" OnValidSubmit="@(() => OnSave.InvokeAsync(Item))">
-    <DataAnnotationsValidator />
+    <h3>Details @valueHeaderPropertyName</h3>
 
-    @if(Fields != null && Item != null)
-    {
-        @Fields(Item);
-    }
+    <EditForm Model="@Item" OnValidSubmit="@(() => OnSave.InvokeAsync(Item))">
+        <DataAnnotationsValidator />
 
-    <button type="button" class="btn btn-default" @onclick="OnCancel">Cancel</button>
-    <button type="submit" class="btn btn-primary">Save</button>
-</EditForm>
+        @if (Fields != null && Item != null)
+        {
+            @Fields(Item)
+            ;
+        }
 
+        <div class="mt-4">
+            <button type="button" class="btn btn-default" @onclick="OnCancel">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </EditForm>
+</div>
 
 @code {
 

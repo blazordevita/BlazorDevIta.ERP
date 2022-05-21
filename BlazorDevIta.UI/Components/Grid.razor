@@ -1,90 +1,110 @@
 ﻿@typeparam IdType
 @typeparam GridItemType where GridItemType: BaseListItem<IdType>
 
-<h1>List Items</h1>
+<div class="container">
 
-<button class="btn btn-primary" @onclick="OnCreate">
-    Create Item
-</button>
+    <h1>List Items</h1>
 
-<input type="text" class="form-control"
-    @bind-value="pageParameters.FilterText"
-    @onkeyup="@(async (e) => { if (e.Key == "Enter") await OnPageRequest.InvokeAsync(pageParameters); })" />
+    <button class="btn btn-primary mb-4" @onclick="OnCreate">
+        Create Item
+    </button>
 
-@if (Page?.Items?.Count > 0)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                @foreach (var property in properties)
-                {
-                    var display = property.GetCustomAttribute<DisplayAttribute>();
-                    <th @onclick="() => RequireColumnSort(property.Name)">
-                        <i class="oi 
-                            @(Page.OrderBy == property.Name 
-                                ? Page.OrderByDirection == OrderDirection.Ascendent 
-                                    ? "oi-sort-ascending" : "oi-sort-descending"
-                                : null)"></i>
-                        @(display == null ? property.Name : display.Name)
-                    </th>
-                }
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Page.Items)
-            {
+    @if (Page?.Items?.Count > 0)
+    {
+        <div>
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control"
+                       @bind-value="pageParameters.FilterText"
+                       @onkeyup="@(async (e) => { if (e.Key == "Enter") await OnPageRequest.InvokeAsync(pageParameters); })" />
+                </div>
+                <div class="col">
+                    <nav>
+                        <ul class="pagination">
+                            <li role="button" class="page-item @(!Page.First ? "disabled" : null)" @onclick="() => RequestPage(1)">
+                                <a class="page-link">First</a>
+                            </li>
+
+                            <li role="button" class="page-item @(!Page.First ? "disabled" : null)" @onclick="() => RequestPage(Page.CurrentPage-1)">
+                                <a class="page-link">Previous</a>
+                            </li>
+
+                            @for(var page = 1; page <= Page.PageCount; page++)
+                            {
+                                var currentPage = page;
+                                <li class="page-item @(Page.CurrentPage == currentPage ? "active" : null)"
+                                @onclick="() => RequestPage(currentPage)">
+                                <a class="page-link">@currentPage</a>
+                                </li>
+                            }
+
+                            <li role="button" class="page-item @(!Page.Last ? "disabled" : null)" @onclick="() => RequestPage(Page.CurrentPage+1)">
+                                <a class="page-link">Next</a>
+                            </li>
+
+                            <li role="button" class="page-item @(!Page.Last ? "disabled" : null)" @onclick="() => RequestPage(Page.PageCount)">
+                                <a class="page-link">Last</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                </div>
+            </div>
+
+        </div>
+
+        <table class="table">
+            <thead>
                 <tr>
                     @foreach (var property in properties)
                     {
-                        var value = property.GetValue(item);
-                        var displayFormat = property.GetCustomAttribute<DisplayFormatAttribute>();
-                        <td>
-                            @(displayFormat?.DataFormatString == null 
-                                ? value 
-                                : string.Format(displayFormat.DataFormatString, value))
-                        </td>
+                        var display = property.GetCustomAttribute<DisplayAttribute>();
+                        <th @onclick="() => RequireColumnSort(property.Name)">
+                            <i class="oi
+                            @(Page.OrderBy == property.Name
+                                ? Page.OrderByDirection == OrderDirection.Ascendent
+                                    ? "oi-sort-ascending" : "oi-sort-descending"
+                                : null)"></i>
+                            @(display == null ? property.Name : display.Name)
+                        </th>
                     }
-                    <td>
-                        <button class="btn btn-warning"
-                        @onclick="@(() => OnEdit.InvokeAsync(item))">
-                            Edit
-                        </button>
-                        <button class="btn btn-danger"
-                        @onclick="@(() => OnDelete.InvokeAsync(item))">
-                            Delete
-                        </button>
-                    </td>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
-    <nav>
-      <ul class="pagination">
-        <li class="page-item" @onclick="() => RequestPage(1)">
-            <a class="page-link">First</a>
-        </li>
-        
-        @for(var page = 1; page <= Page.PageCount; page++)
-        {
-            var currentPage = page;
-            <li class="page-item @(Page.CurrentPage == currentPage ? "active" : null)" 
-                @onclick="() => RequestPage(currentPage)">
-                <a class="page-link">@currentPage</a>
-            </li>
-        }
-        
-        <li class="page-item" @onclick="() => RequestPage(Page.PageCount)">
-            <a class="page-link">Last</a>
-        </li>
-      </ul>
-    </nav>
-}
-else
-{
-    <span>No data available</span>
-}
+            </thead>
+            <tbody>
+                @foreach (var item in Page.Items)
+                {
+                    <tr>
+                        @foreach (var property in properties)
+                        {
+                            var value = property.GetValue(item);
+                            var displayFormat = property.GetCustomAttribute<DisplayFormatAttribute>();
+                            <td>
+                                @(displayFormat?.DataFormatString == null
+                    ? value
+                    : string.Format(displayFormat.DataFormatString, value))
+                            </td>
+                        }
+                        <td>
+                            <button class="btn btn-warning"
+                            @onclick="@(() => OnEdit.InvokeAsync(item))">
+                                Edit
+                            </button>
+                            <button class="btn btn-danger"
+                            @onclick="@(() => OnDelete.InvokeAsync(item))">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <span>No data available</span>
+    }
+</div>
 
 @code {
     private PropertyInfo[] properties = typeof(GridItemType).GetProperties()
@@ -110,7 +130,7 @@ else
 
     public async Task RequireColumnSort(string propertyName)
     {
-        if(pageParameters.OrderBy != propertyName)
+        if (pageParameters.OrderBy != propertyName)
         {
             pageParameters.OrderBy = propertyName;
             pageParameters.OrderByDirection = OrderDirection.Descendent;
