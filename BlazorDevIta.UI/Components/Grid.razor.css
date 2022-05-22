@@ -1,0 +1,7 @@
+﻿.th-sort {
+    cursor: pointer;
+}
+
+.th-sort:hover {
+    background-color: #1692e430;
+}

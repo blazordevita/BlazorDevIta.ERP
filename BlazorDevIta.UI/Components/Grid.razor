@@ -19,14 +19,25 @@
                 @foreach (var property in properties)
                 {
                     var display = property.GetCustomAttribute<DisplayAttribute>();
-                    <th @onclick="() => RequireColumnSort(property.Name)">
-                        <i class="oi 
-                            @(Page.OrderBy == property.Name 
+
+                    var notOrderable= property.GetCustomAttribute<NotOrderableAttribute>();
+
+                    if(notOrderable == null)
+                    {
+                        <th class="th-sort" @onclick="() => RequireColumnSort(property.Name)">
+                        <i class="@(Page.OrderBy == property.Name 
                                 ? Page.OrderByDirection == OrderDirection.Ascendent 
-                                    ? "oi-sort-ascending" : "oi-sort-descending"
+                                    ? " oi oi-sort-ascending" : " oi oi-sort-descending"
                                 : null)"></i>
+                           
                         @(display == null ? property.Name : display.Name)
-                    </th>
+                        </th>
+                    }
+                    else
+                    {
+                        <th>@(display == null ? property.Name : display.Name)</th>
+                    }
+                    
                 }
                 <th></th>
             </tr>
@@ -121,6 +132,8 @@ else
                 pageParameters.OrderByDirection == OrderDirection.Descendent
                     ? OrderDirection.Ascendent : OrderDirection.Descendent;
         }
+
+        pageParameters.Page = 1;
 
         await OnPageRequest.InvokeAsync(pageParameters);
     }
