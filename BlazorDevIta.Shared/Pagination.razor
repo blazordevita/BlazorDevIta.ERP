@@ -32,7 +32,7 @@
 
 @code {
     [Parameter]
-    public EventCallback PageSelected { get; set; }
+    public EventCallback<PaginationEventArgs> PageSelected { get; set; }
     [Parameter]
     public PagedResult PagedResult { get; set; } = default!;
     [Parameter]
@@ -70,9 +70,12 @@
         if (e.Value != null)
         {
             int rpp = Convert.ToInt32(e.Value.ToString());
-            PagedResult.PageSize = rpp;
-            PagedResult.CurrentPage = 1;
-            await PageSelected.InvokeAsync();
+            PaginationEventArgs args = new()
+            {
+                PageSize = rpp,
+                Page = 1
+            };
+            await PageSelected.InvokeAsync(args);
         }
     }
 
@@ -80,8 +83,12 @@
     {
         if (link.Page == PagedResult.CurrentPage) return;
         if (!link.Enabled) return;
-        PagedResult.CurrentPage = link.Page;
-        await PageSelected.InvokeAsync();
+        PaginationEventArgs args = new()
+        {
+            Page = link.Page,
+            PageSize = PagedResult.PageSize
+        };
+        await PageSelected.InvokeAsync(args);
     }
 
     class LinkModel
@@ -99,9 +106,16 @@
         public bool Enabled { get; set; }
         public bool Active { get; set; }
     }
-
-    // Questa classe è qui solo per compatibilità ma puoi usare direttamente quella dell'applicazione per la paginazione
-    class PagedResult
+    
+    // Da spostare fuori
+    public class PaginationEventArgs
+    {
+        public int PageSize { get; set; }
+        public int Page { get; set; }
+    }
+    
+    // Da spostare fuori
+    public class PagedResult
     {
         public int CurrentPage { get; set; }
         public int PageCount { get; set; }
