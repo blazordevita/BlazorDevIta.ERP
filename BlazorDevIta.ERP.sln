@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.ERP.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.ERP.Business", "BlazorDevIta.ERP.Business\BlazorDevIta.ERP.Business.csproj", "{971F934A-7F4A-413E-9205-13960C72A47B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{832B9155-2F10-4FD8-AAC7-4BA9B5AE4B0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDevIta.UI.Tests", "BlazorDevIta.UI.Tests\BlazorDevIta.UI.Tests.csproj", "{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,9 +61,16 @@ Global
 		{971F934A-7F4A-413E-9205-13960C72A47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{971F934A-7F4A-413E-9205-13960C72A47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{971F934A-7F4A-413E-9205-13960C72A47B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16} = {832B9155-2F10-4FD8-AAC7-4BA9B5AE4B0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A985CFB-1EC5-4463-8D54-6D447B5624C3}
