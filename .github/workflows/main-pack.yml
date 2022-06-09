@@ -1,0 +1,57 @@
+name: Build and Pack Nuget on Github
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+      
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.x'
+        
+      - name: Determine Version
+        id:   gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+      
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: true 
+
+      - name: Build with dotnet
+        run: dotnet build ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release
+
+      - name: test with dotnet
+        run: dotnet test
+      
+      - name: Create Pack
+        run: dotnet pack ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release -p:Version=${{ steps.gitversion.outputs.SemVer }}
+      
+      - name: Publish
+        run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGETAPIKEY}} -NoSymbols -SkipDuplicate
+
+      - name: Create tag repository
+        run: |
+          git tag "${{ steps.gitversion.outputs.SemVer }}"
+          git push origin "${{ steps.gitversion.outputs.SemVer }}"
+
+      - name: Archive Pack
+        uses: actions/upload-artifact@v3
+        with:
+          name: pack
+          path: |
+            **/*.nupkg
+
+    
