@@ -37,7 +37,7 @@ jobs:
         run: dotnet test --no-restore --no-build --verbosity normal
       
       - name: Create Pack
-        run: dotnet pack ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release -p:Version=${{ steps.gitversion.outputs.SemVer}} --include-source
+        run: dotnet pack ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release -p:Version=${{ steps.gitversion.outputs.SemVer }} --include-source
 
       - name: Publish
         run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}} -NoSymbols -SkipDuplicate
