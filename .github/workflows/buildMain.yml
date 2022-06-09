@@ -47,8 +47,6 @@ jobs:
         inputs:
           targetType: 'inline'
           script: |
-            git config --global user.email "system@system.it"
-            git config --global user.name "system"
             git tag $(GitVersion.SemVer)
             git push origin --tags $(GitVersion.SemVer)
 
