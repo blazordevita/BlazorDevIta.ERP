@@ -1,11 +1,9 @@
 name: Build and Publish package
 
 on:
-  # pull_request:
-  #     - master
-  # branch:
-  #     - master
-   workflow_dispatch:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
