@@ -7,9 +7,15 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/AVenditti183/BlazorDevIta.ERP</RepositoryUrl>
+    <PackageLicenseFile>license.md</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/blazordevita/BlazorDevIta.ERP</RepositoryUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
+    <None Include="..\license.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
