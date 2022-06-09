@@ -42,13 +42,10 @@ jobs:
       - name: Publish
         run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
       
-      - task: Bash@3
-        name: Tag
-        inputs:
-          targetType: 'inline'
-          script: |
-            git tag $(GitVersion.SemVer)
-            git push origin --tags $(GitVersion.SemVer)
+      - name: Create tag repository
+        run: |
+          git tag "${{ steps.gitversion.outputs.SemVer }}"
+          git push origin "${{ steps.gitversion.outputs.SemVer 
 
 
     
