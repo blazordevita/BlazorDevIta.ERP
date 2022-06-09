@@ -9,7 +9,7 @@ namespace BlazorDevIta.UI.Pages
         where ListItemType : BaseListItem<IdType>
         where DetailsType : BaseDetails<IdType>, new()
     {
-        protected Page<ListItemType, IdType>? page = null;
+        protected Page<ListItemType, IdType>? page = null; 
         protected DetailsType? currentItem = null;
 
         [Inject]
