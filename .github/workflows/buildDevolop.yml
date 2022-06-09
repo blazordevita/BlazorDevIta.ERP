@@ -1,0 +1,47 @@
+name: Build and Publish package Alpha
+
+on:
+   branch:
+       - develop
+       
+   workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.x'
+        
+      - name: Determine Version
+        id:   gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+      
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: true
+
+      - name: Build
+        run: dotnet build ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release
+
+      - name: Run tests
+        run: dotnet test --no-restore --no-build --verbosity normal
+      
+      - name: Create Pack
+        run: dotnet pack ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release -p:Version=${{ steps.gitversion.outputs.SemVer}} --include-source
+
+      - name: Publish
+        run: dotnet nuget push **\*.nupkg --source "github" -ApiKey ${{ secrets.GITHUB_TOKEN }} -NoSymbols -SkipDuplicate
+
+
+    
