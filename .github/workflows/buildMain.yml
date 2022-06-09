@@ -1,0 +1,51 @@
+name: Build and Publish package
+
+on:
+  # pull_request:
+  #     - master
+  # branch:
+  #     - master
+   workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.x'
+        
+      - name: Determine Version
+        id:   gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+      
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: true
+
+      - name: Build with dotnet
+        run: dotnet build ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release
+
+      - name: test with dotnet
+        run: dotnet test
+      
+      - name: build pack
+        run: dotnet pack ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release
+
+    outputs:
+      version: ${{ steps.gitversion.outputs.SemVer}}
+    
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    
