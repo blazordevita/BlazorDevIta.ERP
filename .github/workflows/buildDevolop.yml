@@ -1,7 +1,7 @@
 name: Build and Publish package Alpha
 
 on:
-   branch:
+  branch:
     - develop
 
    workflow_dispatch:
