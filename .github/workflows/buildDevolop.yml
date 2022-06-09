@@ -40,7 +40,7 @@ jobs:
         run: dotnet pack ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release -p:Version=${{ steps.gitversion.outputs.SemVer}} --include-source
       
       - name: Publish
-        run: dotnet nuget push **\*.nupkg --source https://nuget.pkg.github.com/AVenditti183/index.json -ApiKey ${{ secrets.GITHUB_TOKEN }} -NoSymbols -SkipDuplicate
+        run: nuget push **\*.nupkg --source https://nuget.pkg.github.com/AVenditti183/index.json -ApiKey ${{ secrets.GITHUB_TOKEN }} -NoSymbols -SkipDuplicate
 
 
     
