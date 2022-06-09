@@ -41,10 +41,4 @@ jobs:
       - name: build pack
         run: dotnet pack ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release
 
-    outputs:
-      version: ${{ steps.gitversion.outputs.SemVer}}
-    
-  publish:
-    runs-on: ubuntu-latest
-    needs: build
     
