@@ -2,9 +2,8 @@ name: Build and Publish package Alpha
 
 on:
   push:
-    branches: [develop]
-
-   workflow_dispatch:
+    branches: [ develop ]
+  workflow_dispatch:
 
 jobs:
   build:
