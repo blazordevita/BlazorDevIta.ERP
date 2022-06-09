@@ -8,6 +8,7 @@
 
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/blazordevita/BlazorDevIta.ERP</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
