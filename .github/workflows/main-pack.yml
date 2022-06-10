@@ -1,4 +1,4 @@
-name: Build and Pack Nuget on Github
+name: Build and Pack Nuget on Nuget.org
 
 on:
   push:
