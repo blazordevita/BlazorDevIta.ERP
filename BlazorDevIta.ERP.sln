@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.ERP.Business",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{832B9155-2F10-4FD8-AAC7-4BA9B5AE4B0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDevIta.UI.Tests", "BlazorDevIta.UI.Tests\BlazorDevIta.UI.Tests.csproj", "{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.UI.Tests", "BlazorDevIta.UI.Tests\BlazorDevIta.UI.Tests.csproj", "{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,6 @@
 ﻿@typeparam IdType
 @typeparam GridItemType where GridItemType: BaseListItem<IdType>
+@inject IConfirmService ConfirmService
 
 <h1>List Items</h1>
 
@@ -51,7 +52,7 @@
                             Edit
                         </button>
                         <button class="btn btn-danger"
-                        @onclick="@(() => OnDelete.InvokeAsync(item))">
+                        @onclick="@(() => RequestDelete(item))">
                             Delete
                         </button>
                     </td>
@@ -86,7 +87,28 @@ else
     <span>No data available</span>
 }
 
+<Confirm ConfirmId="GridConfirm" OnConfirm="ConfirmDelete" />
+
 @code {
+    private GridItemType? itemToDelete = null;
+
+    public async Task RequestDelete(GridItemType item)
+    {
+        itemToDelete = item;
+
+        if(ConfirmService is not null)
+            await ConfirmService.ShowConfirm("GridConfirm");
+    }
+
+    public async Task ConfirmDelete()
+    {
+        if(itemToDelete is not null)
+            await OnDelete.InvokeAsync(itemToDelete);
+
+        if(ConfirmService is not null)
+            await ConfirmService.HideConfirm("GridConfirm");
+    }
+
     private PropertyInfo[] properties = typeof(GridItemType).GetProperties()
         .Where(x => x.GetCustomAttribute<HiddenAttribute>() == null)
         .ToArray();
