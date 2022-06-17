@@ -72,25 +72,41 @@ namespace BlazorDevIta.ERP.BlazorWasm.Server.Controllers
 			if(parameters.Page > pageCount) parameters.Page = pageCount;
 			if(parameters.Page < 1) parameters.Page = 1;
 
-			if(!string.IsNullOrEmpty(parameters.OrderBy))
+			bool bResetOrderby = false;
+
+			if (!string.IsNullOrEmpty(parameters.OrderBy))
             {
-				try
+				var propertyInfo = typeof(EntityType).GetProperty(parameters!.OrderBy);
+			
+				if (propertyInfo!=null)
 				{
-					if (parameters.OrderByDirection == OrderDirection.Ascendent)
+					try
 					{
-						result = result.OrderByProperty(parameters.OrderBy);
+
+						if (parameters.OrderByDirection == OrderDirection.Ascendent)
+						{
+							result = result.OrderByProperty(parameters.OrderBy);
+						}
+						else
+						{
+							result = result.OrderByPropertyDescending(parameters.OrderBy);
+						}
 					}
-					else
+					catch
 					{
-						result = result.OrderByPropertyDescending(parameters.OrderBy);
+						bResetOrderby = true;
+				
 					}
 				}
-				catch
-                {
-					parameters.OrderBy = null;
-					parameters.OrderByDirection = OrderDirection.Ascendent;
-                }
+				else bResetOrderby=true;
+
             }
+
+			if (bResetOrderby)
+			{
+				parameters.OrderBy = null;
+				parameters.OrderByDirection = OrderDirection.Ascendent;
+			}
 
 			var page = new Page<ListItemType, IdType>()
 			{
