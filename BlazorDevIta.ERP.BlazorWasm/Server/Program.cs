@@ -14,10 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+//builder.Services.AddDbContext<ERPDbContext>(opt =>
+//	opt.UseSqlServer(
+//		builder.Configuration.GetConnectionString("DefaultConnection"),
+//		b => b.MigrationsAssembly("BlazorDevIta.ERP.BlazorWasm.Server")));
+
 builder.Services.AddDbContext<ERPDbContext>(opt =>
-	opt.UseSqlServer(
-		builder.Configuration.GetConnectionString("DefaultConnection"),
-		b => b.MigrationsAssembly("BlazorDevIta.ERP.BlazorWasm.Server")));
+    opt.UseInMemoryDatabase("BlazorDevItaDB"));
 
 builder.Services.AddScoped<DbContext, ERPDbContext>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -26,7 +29,7 @@ builder.Services.AddScoped(typeof(IRepository<,>), typeof(EFRepository<,>));
 var app = builder.Build();
 
 //Applica le migrazioni mancanti sul DB e inizializza le tabelle se necessario
-await app.InizializeDatabases();
+//await app.InizializeDatabases();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
