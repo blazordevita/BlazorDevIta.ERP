@@ -12,13 +12,13 @@ namespace BlazorDevIta.ERP.Infrastructure.Extensions
     {
         private static readonly MethodInfo OrderByMethod = typeof(Queryable)
                    .GetMethods()
-                   .Where(method => method.Name == "OrderBy")
+                   .Where(method => method.Name == nameof(Queryable.OrderBy))
                    .Where(method => method.GetParameters().Length == 2)
                    .Single();
 
         private static readonly MethodInfo OrderByDescendingMethod = typeof(Queryable)
            .GetMethods()
-           .Where(method => method.Name == "OrderByDescending")
+           .Where(method => method.Name == nameof(Queryable.OrderByDescending))
            .Where(method => method.GetParameters().Length == 2)
            .Single();
 
