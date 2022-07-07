@@ -14,13 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-//builder.Services.AddDbContext<ERPDbContext>(opt =>
-//	opt.UseSqlServer(
-//		builder.Configuration.GetConnectionString("DefaultConnection"),
-//		b => b.MigrationsAssembly("BlazorDevIta.ERP.BlazorWasm.Server")));
-
 builder.Services.AddDbContext<ERPDbContext>(opt =>
-    opt.UseInMemoryDatabase("BlazorDevItaDB"));
+    opt.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("BlazorDevIta.ERP.Migrations.SqlServer")));
+
+//builder.Services.AddDbContext<ERPDbContext>(opt =>
+//    opt.UseInMemoryDatabase("BlazorDevItaDB"));
 
 builder.Services.AddScoped<DbContext, ERPDbContext>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));

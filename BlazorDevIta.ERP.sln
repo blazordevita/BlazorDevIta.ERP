@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{832B9155
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDevIta.UI.Tests", "BlazorDevIta.UI.Tests\BlazorDevIta.UI.Tests.csproj", "{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDevIta.ERP.Migrations.SqlServer", "BlazorDevIta.ERP.Migrations.SqlServer\BlazorDevIta.ERP.Migrations.SqlServer.csproj", "{55610AC4-D609-4543-8AFA-6001D77B9826}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4130595B-EDCC-4B4F-9CD6-1D3F88C04E16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55610AC4-D609-4543-8AFA-6001D77B9826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55610AC4-D609-4543-8AFA-6001D77B9826}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55610AC4-D609-4543-8AFA-6001D77B9826}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55610AC4-D609-4543-8AFA-6001D77B9826}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
