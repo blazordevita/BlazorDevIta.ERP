@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\BlazorDevIta.ERP.Business\BlazorDevIta.ERP.Business.csproj" />
     <ProjectReference Include="..\..\BlazorDevIta.ERP.Infrastructure.EF\BlazorDevIta.ERP.Infrastructure.EF.csproj" />
     <ProjectReference Include="..\..\BlazorDevIta.ERP.Infrastructure\BlazorDevIta.ERP.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\BlazorDevIta.ERP.Migrations.SqlServer\BlazorDevIta.ERP.Migrations.SqlServer.csproj" />
     <ProjectReference Include="..\Client\BlazorDevIta.ERP.BlazorWasm.Client.csproj" />
     <ProjectReference Include="..\..\BlazorDevIta.Shared\BlazorDevIta.ERP.Shared.csproj" />
   </ItemGroup>
