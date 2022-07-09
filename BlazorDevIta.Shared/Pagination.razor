@@ -1,0 +1,125 @@
+@if (PagedResult != null)
+{
+    <div class="row">
+        <div class="col-auto text-nowrap">
+            <label class="col-form-label ms-2 d-inline-block">Righe per pagina</label>
+            <select class="form-select form-select-sm d-inline-block w-auto" @onchange="RecordsForPageChanged">
+                <option selected="@(PagedResult.PageSize == 20)">20</option>
+                <option selected="@(PagedResult.PageSize == 30)">30</option>
+                <option selected="@(PagedResult.PageSize == 50)">50</option>
+                <option selected="@(PagedResult.PageSize == 100)">100</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label class="col-form-label ms-2 d-inline-block">Elementi trovati: @PagedResult!.RowCount</label>
+        </div>
+        <div class="col"></div>
+        <div class="col-auto" style="user-select:none">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @foreach (var link in links)
+                    {
+                        <li class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)"
+                        @onclick="@(() => SelectedPageInternal(link))">
+                            <span class="page-link">@link.Text</span>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public EventCallback<PaginationEventArgs> PageSelected { get; set; }
+    [Parameter]
+    public PagedResult PagedResult { get; set; } = default!;
+    [Parameter]
+    public int Radius { get; set; } = 3;
+
+    private List<LinkModel> links = new();
+
+    protected override void OnParametersSet()
+    {
+        if(PagedResult != null)
+        {
+            CreateLinks();
+        }
+    }
+    private void CreateLinks()
+    {
+        links = new();
+        bool isPreviousPageEnabled = PagedResult!.CurrentPage != 1;
+        int previousPage = PagedResult.CurrentPage - 1;
+        links.Add(new LinkModel(previousPage, isPreviousPageEnabled, "Precedente"));
+        for (int i = 1; i <= PagedResult.PageCount; i++)
+        {
+            if (i >= PagedResult.CurrentPage - Radius && i <= PagedResult.CurrentPage + Radius)
+            {
+                links.Add(new LinkModel(i) { Active = PagedResult.CurrentPage == i });
+            }
+        }
+        bool isNextPageEnabled = PagedResult.CurrentPage < PagedResult.PageCount;
+        int nextPage = PagedResult.CurrentPage + 1;
+        links.Add(new LinkModel(nextPage, isNextPageEnabled, "Prossima"));
+    }
+
+    private async Task RecordsForPageChanged(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+        {
+            int rpp = Convert.ToInt32(e.Value.ToString());
+            PaginationEventArgs args = new()
+            {
+                PageSize = rpp,
+                Page = 1
+            };
+            await PageSelected.InvokeAsync(args);
+        }
+    }
+
+    private async Task SelectedPageInternal(LinkModel link)
+    {
+        if (link.Page == PagedResult.CurrentPage) return;
+        if (!link.Enabled) return;
+        PaginationEventArgs args = new()
+        {
+            Page = link.Page,
+            PageSize = PagedResult.PageSize
+        };
+        await PageSelected.InvokeAsync(args);
+    }
+
+    class LinkModel
+    {
+        public LinkModel(int page) : this(page, true) { }
+        public LinkModel(int page, bool enabled) : this(page, enabled, page.ToString()) { }
+        public LinkModel(int page, bool enabled, string text)
+        {
+            Page = page;
+            Enabled = enabled;
+            Text = text;
+        }
+        public string Text { get; set; }
+        public int Page { get; set; }
+        public bool Enabled { get; set; }
+        public bool Active { get; set; }
+    }
+    
+    // Da spostare fuori
+    public class PaginationEventArgs
+    {
+        public int PageSize { get; set; }
+        public int Page { get; set; }
+    }
+    
+    // Da spostare fuori
+    public class PagedResult
+    {
+        public int CurrentPage { get; set; }
+        public int PageCount { get; set; }
+        public int PageSize { get; set; }
+        public int RowCount { get; set; }
+    }
+}
