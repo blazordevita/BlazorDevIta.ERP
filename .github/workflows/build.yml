@@ -25,4 +25,4 @@ jobs:
         run: dotnet build ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release
 
       - name: test with dotnet
-        run: dotnet test
+        run: dotnet test --no-restore
