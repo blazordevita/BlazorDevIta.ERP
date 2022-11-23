@@ -18,11 +18,11 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '7.0.x'
           include-prerelease: true 
 
       - name: Build with dotnet
         run: dotnet build ./BlazorDevIta.UI/BlazorDevIta.UI.csproj --configuration Release
 
       - name: test with dotnet
-        run: dotnet test
+        run: dotnet test --no-restore
